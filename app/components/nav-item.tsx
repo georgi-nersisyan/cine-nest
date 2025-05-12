@@ -1,0 +1,30 @@
+import React from "react";
+import { MenuItem } from "./menu-items";
+import Link from "next/link";
+
+export interface Props {
+  menuItem:MenuItem;
+}
+
+export default function NavItem({ menuItem }: Props) {
+  return (
+    <li
+      className="relative group min-w-25 flex items-center justify-center text-white"
+    >
+      <Link href={menuItem.slug}>{menuItem.title}</Link>
+
+      {menuItem.submenu && (
+        <ul className="absolute hidden group-hover:block bg-gray-600 w-40 top-full">
+          {menuItem.submenu.map((elm) => (
+            <li
+              key={elm.slug}
+              className="h-11 flex items-center justify-center"
+            >
+              <Link href={elm.slug}>{elm.title}</Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
