@@ -4,7 +4,8 @@ const api_url = main_url + "/discover/movie?sort_by=popularity.desc&" + api_key;
 const img_url_original = "https://image.tmdb.org/t/p/original"
 const img_url = "https://image.tmdb.org/t/p/w500";
 const searchUrl = main_url + "/search/movie?" + api_key;
-const ganre = [
+
+const genre = [
     { id: 28, name: "Action" },
     { id: 12, name: "Adventure" },
     { id: 16, name: "Animation" },
@@ -32,4 +33,4 @@ export const request = async (url:string) => {
     return data;
 };
 
-export {api_key, main_url, api_url, img_url, img_url_original, searchUrl, ganre};
+export {api_key, main_url, api_url, img_url, img_url_original, searchUrl, genre};

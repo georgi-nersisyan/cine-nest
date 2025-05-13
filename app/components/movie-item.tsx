@@ -2,6 +2,7 @@ import React from "react";
 import { img_url, img_url_original } from "../lib";
 import Image from "next/image";
 import { FaImdb } from "react-icons/fa";
+import Link from "next/link";
 
 export interface IMovie {
   id: number;
@@ -34,7 +35,7 @@ export default function MovieItem({ movie }: Props) {
 
         <div className="flex justify-evenly">
           <span className="flex gap-1 items-center">
-            <FaImdb color="yellow" />{" "}
+            <FaImdb color="yellow" />
             <p
               className="flex gap-1 items-center text-gray-300">
               {movie.vote_average}
@@ -64,6 +65,8 @@ export default function MovieItem({ movie }: Props) {
         </div>
 
         <span className="text-gray-500">{movie.overview}</span>
+
+        <Link href={`/movies/${movie.id}`}><button className="w-52 p-2.5 bg-red-600 flex self-start justify-center rounded-2xl border-2 cursor-pointer transition-all border-red-600 border-solid hover:bg-transparent hover:text-red-600">Read more</button></Link>
       </div>
 
       <div className="w-1/2 h-[650px] p-6 backdrop-blur-lg rounded-2xl">

@@ -1,15 +1,24 @@
+'use client'
+
 import React from "react";
 import { MenuItem } from "./menu-items";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export interface Props {
   menuItem:MenuItem;
 }
 
 export default function NavItem({ menuItem }: Props) {
+  const pathname = usePathname();
+  const isActive = pathname === menuItem.slug;
+
   return (
     <li
-      className="relative group min-w-25 flex items-center justify-center text-white"
+      className={
+        "relative group min-w-25 flex items-center justify-center transition-all " +
+        (isActive ? "text-red-600" : "text-white hover:text-red-600")
+      }
     >
       <Link href={menuItem.slug}>{menuItem.title}</Link>
 

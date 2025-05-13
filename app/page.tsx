@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api_url, request, searchUrl } from "./lib";
+import { api_key, api_url, main_url, request, searchUrl } from "./lib";
 import MovieItem, { IMovie } from "./components/movie-item";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -11,10 +11,14 @@ import "swiper/css/navigation";
 import { Navigation, Pagination } from "swiper/modules";
 import SearchForm from "./components/search-form";
 import MovieCard from "./components/movie-card";
+import MovieBlock from "./components/movie-block";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
   const [popular, setPopular] = useState([]);
+
+   const [history, setHistory] = useState([]);
+  const [comedy, setComedy] = useState([]);
 
   useEffect(() => {
     const popularFetch = async () => {
@@ -23,6 +27,21 @@ export default function Home() {
     };
 
     popularFetch();
+  }, []);
+
+   useEffect(() => {
+    const genreFetch = async () => {
+       const historyUrl = `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=36&${api_key}`;
+       const history = await request(historyUrl);
+       setHistory(history.results)
+
+       
+       const comedyUrl = `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=35&${api_key}`;
+       const comedy = await request(comedyUrl);
+       setComedy(comedy.results)
+    }
+
+    genreFetch()
   }, []);
 
   const onFind = (title:string) => {
@@ -50,8 +69,11 @@ export default function Home() {
         <SearchForm movies={movies} onSearch={onFind} />
       </div>
 
-      <div>
-      <Swiper
+      <div className="flex flex-col gap-10 p-5">
+        <div className="w-full flex flex-col gap-5">
+          <h3 className="text-4xl">Search</h3>
+
+          <Swiper
         slidesPerView={4}
         spaceBetween={30}
         pagination={{
@@ -68,6 +90,11 @@ export default function Home() {
           })
         }
       </Swiper>
+        </div>
+
+      <MovieBlock movies={history} title="History" />
+        
+      <MovieBlock movies={comedy} title="Comedy" />
       </div>
     </div>
   );
