@@ -3,6 +3,14 @@ import { img_url, img_url_original } from "../lib";
 import Image from "next/image";
 import { FaImdb } from "react-icons/fa";
 import Link from "next/link";
+import { IGenre } from "./genre-button";
+
+export interface ProductionCompanie {
+  id:number;
+  logo_path:string;
+  name:string;
+  origin_country:string;
+}
 
 export interface IMovie {
   id: number;
@@ -16,6 +24,9 @@ export interface IMovie {
   vote_average: number;
   vote_count: number;
   original_language: string;
+  runtime: number;
+  genres: IGenre[];
+  production_companies: ProductionCompanie[];
 }
 
 export interface Props {
@@ -43,10 +54,9 @@ export default function MovieItem({ movie }: Props) {
           </span>
 
           <span className="flex items-center">
-            <p
-              className="flex gap-1 items-center text-gray-300">
-               language - {movie.original_language.toUpperCase()} 
-            </p>
+              <p className="flex gap-1 items-center text-gray-300">
+                runtime - {movie.runtime ? Number(movie.runtime / 60).toFixed(1) : "N/A"} hours
+              </p>
           </span>
 
           <span className="flex items-center">
@@ -59,7 +69,7 @@ export default function MovieItem({ movie }: Props) {
           <span className="flex items-center">
             <p
               className="text-gray-300">
-              {movie.release_date}
+              date - {movie.release_date}
             </p>
           </span>
         </div>
@@ -76,7 +86,7 @@ export default function MovieItem({ movie }: Props) {
             alt={movie.title}
             width={300}
             height={200}
-            className="h-full object-contain rounded-2xl"
+            className="w-full h-full object-cover rounded-2xl"
           />
           :
           <Image
@@ -84,7 +94,7 @@ export default function MovieItem({ movie }: Props) {
             alt={movie.title}
             width={300}
             height={200}
-            className="h-full object-contain rounded-2xl"
+            className="w-full h-full object-cover rounded-2xl"
           />
         }
       </div>

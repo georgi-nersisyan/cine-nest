@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { api_key, genre, main_url, request } from "../lib";
 import { IMovie } from "../components/movie-item";
-import GenreItem, { IGenre } from "../components/genre-item";
+import GenreButton, { IGenre } from "../components/genre-button";
 import MovieBlock from "../components/movie-block";
 
-export default function page() {
+export default function Movies() {
   const [movies, setMovies] = useState<IMovie[]>([]);
   const [genreLink, setGenreLink] = useState<string>('');
 
@@ -28,7 +28,7 @@ export default function page() {
     <div className="flex flex-col gap-10">
       <div className="flex justify-center flex-wrap gap-4 p-5">
         {genre.map((gen:IGenre) => {
-          return <GenreItem key={"ganre" + gen.id} genre={gen} onGenre={choiceGenre} />;
+          return <GenreButton key={"ganre" + gen.id} genre={gen} onGenre={choiceGenre} />;
         })}
 
         <MovieBlock movies={movies} title="Movies" />

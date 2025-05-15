@@ -10,7 +10,7 @@ interface Props {
     onGenre:(id:number)=>void;
 }
 
-export default function GenreItem({genre, onGenre}:Props) {
+export default function GenreButton({genre, onGenre}:Props) {
     const choiceGenre = () => {
         onGenre(genre.id);
     }
