@@ -8,19 +8,23 @@ import React, { useEffect, useState } from "react";
 import { FaImdb } from "react-icons/fa";
 
 import "swiper/css";
-import "swiper/css/pagination";
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
 
-import { Pagination } from "swiper/modules";
+import { EffectCoverflow, Pagination } from "swiper/modules";
 import { useParams } from "next/navigation";
 import NotFound from "@/app/components/not-found";
 import { IGenre } from "@/app/components/genre-button";
 import ActorCard, { IActor } from "@/app/components/actor-card";
+import VideoCard, { IVideo } from "@/app/components/video-card";
 
 export default function MoviePage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState<IMovie | null>(null);
 
   const [actors, setActors] = useState<IActor[] | null>(null);
+  const [videos, setVideos] = useState<IVideo[] | null>(null);
 
   useEffect(() => {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}?${api_key}`)
@@ -42,7 +46,7 @@ export default function MoviePage() {
 
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?${api_key}`)
     .then((res) => res.json())
-    .then((res) => setActors(res.cast));
+    .then((res) => setVideos(res.results));
   }, [])
 
   if (movie === null) {
@@ -179,7 +183,29 @@ export default function MoviePage() {
           }
       </Swiper>
 
-        
+        <Swiper
+        effect={'coverflow'}
+        grabCursor={true}
+        slidesPerView={3}
+        coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true,
+        }}
+        pagination={true}
+        modules={[EffectCoverflow, Pagination]}
+        className="mySwiper"
+      >
+        {
+          videos?.map((video:IVideo) => {
+            return <SwiperSlide key={"video-"+video.id}>
+              <VideoCard video={video} />
+            </SwiperSlide>
+          })
+        }
+      </Swiper>
       </div>
     </div>
   );

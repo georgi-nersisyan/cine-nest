@@ -33,7 +33,7 @@ export default function MovieCard({ movie }: Props) {
         )}
       </div>
 
-      <div>
+      <div className="w-full flex flex-col justify-center items-center gap-4">
         <h4>{movie.title}</h4>
 
         <b className="text-red-700">{movie.release_date}</b>
