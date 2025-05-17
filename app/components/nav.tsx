@@ -1,21 +1,38 @@
-import React from 'react'
-import { MenuItem } from './menu-items';
-import NavItem from './nav-item';
+'use client'
+
+import React, { useState } from "react";
+import { MenuItem } from "./menu-items";
+import NavItem from "./nav-item";
+import { IoMenuOutline } from "react-icons/io5";
 
 interface NavItemsProps {
-    menuItems:MenuItem[];
+  menuItems: MenuItem[];
 }
 
-export default function Nav({menuItems}:NavItemsProps) {
+export default function Nav({ menuItems }: NavItemsProps) {
+  const [isMenu, setIsMenu] = useState(false);
+
+  const handleMenu = () => {
+    setIsMenu(!isMenu);
+  }
+
   return (
     <nav>
-        <ul className='flex'>
-        {
-            menuItems.map((item:MenuItem) => {
-                return <NavItem key={"menu-item"+item.id} menuItem={item} />
-            })
-        }
+      <ul className="hidden md:flex">
+        {menuItems.map((item: MenuItem) => {
+          return <NavItem key={"menu-item" + item.id} menuItem={item} />;
+        })}
+      </ul>
+
+      <div className="flex flex-col gap-5 releative md:hidden">
+        <IoMenuOutline color="white" size={40} onClick={handleMenu} />
+
+        <ul className={`w-2xs absolute top-20 bg-[#232323] p-2 right-0 ${isMenu ? "hidden" : "false"}`}>
+          {menuItems.map((item: MenuItem) => {
+            return <NavItem key={"menu-item" + item.id} menuItem={item} />;
+          })}
         </ul>
+      </div>
     </nav>
-  )
+  );
 }

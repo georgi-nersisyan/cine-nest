@@ -27,7 +27,7 @@ export default function ActorCard({actor}:Props) {
 
         <h4>{actor.name}</h4>
 
-        <b className='text-red-600'>{actor.character}</b>
+        <b className='text-standartColor'>{actor.character}</b>
     </div>
   )
 }

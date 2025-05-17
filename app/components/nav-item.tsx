@@ -17,7 +17,7 @@ export default function NavItem({ menuItem }: Props) {
     <li
       className={
         "relative group min-w-25 flex items-center justify-center transition-all " +
-        (isActive ? "text-red-600" : "text-white hover:text-red-600")
+        (isActive ? "text-stardartColor" : "text-white hover:text-stardartColor")
       }
     >
       <Link href={menuItem.slug}>{menuItem.title}</Link>

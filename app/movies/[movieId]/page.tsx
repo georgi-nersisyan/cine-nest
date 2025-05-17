@@ -12,7 +12,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
-import { EffectCoverflow, Pagination } from "swiper/modules";
+import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
 import { useParams } from "next/navigation";
 import NotFound from "@/app/components/not-found";
 import { IGenre } from "@/app/components/genre-button";
@@ -25,6 +25,16 @@ export default function MoviePage() {
 
   const [actors, setActors] = useState<IActor[] | null>(null);
   const [videos, setVideos] = useState<IVideo[] | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedVideo, setSelectedVideo] = useState<IVideo|null>(null);
+
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  }
+
+  const handleSelectVideo = (video:IVideo) => {
+    setSelectedVideo(video);
+  }
 
   useEffect(() => {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}?${api_key}`)
@@ -47,7 +57,7 @@ export default function MoviePage() {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?${api_key}`)
     .then((res) => res.json())
     .then((res) => setVideos(res.results));
-  }, [])
+  }, [movieId])
 
   if (movie === null) {
     return <NotFound />;
@@ -129,10 +139,10 @@ export default function MoviePage() {
         <Swiper
           slidesPerView={4}
           spaceBetween={30}
-          pagination={{
-            clickable: true,
+          autoplay={{
+            delay:1000
           }}
-          modules={[Pagination]}
+          modules={[Autoplay]}
           className="mySwiper"
         >
           {movie.production_companies?.map((companie: ProductionCompanie) => {
@@ -170,10 +180,6 @@ export default function MoviePage() {
           <Swiper
         slidesPerView={5}
         spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Pagination]}
         className="mySwiper"
       >
           {
@@ -194,18 +200,28 @@ export default function MoviePage() {
           modifier: 1,
           slideShadows: true,
         }}
-        pagination={true}
+        breakpoints={
+          {
+            
+          }
+        }
         modules={[EffectCoverflow, Pagination]}
         className="mySwiper"
       >
-        {
-          videos?.map((video:IVideo) => {
-            return <SwiperSlide key={"video-"+video.id}>
-              <VideoCard video={video} />
+        { 
+        videos?.slice(0, 6)?.map((video:IVideo) => {
+            return <>
+            <SwiperSlide key={"video-"+video.id}>
+              <VideoCard video={video} onOpen={handleOpen} selectedVideo={handleSelectVideo} />
             </SwiperSlide>
+          </>
           })
         }
       </Swiper>
+
+        <div className={`w-full p-10 fixed top-1/2 left-1/2 backdrop-blur-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl z-50 ${isOpen ? "block" : "hidden"}`} onClick={handleOpen}>          
+          <iframe width="750px" height="700px" src={`https://www.youtube.com/embed/${selectedVideo?.key}`} className="w-full rounded-2xl" title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; frameborder; allowfullscreen"></iframe>
+        </div>
       </div>
     </div>
   );
