@@ -70,7 +70,7 @@ export default function MovieItem({ movie }: Props) {
 
         <span className="text-gray-500">{movie.overview}</span>
 
-        <Link href={`/movies/${movie.id}`}><button className="w-52 p-2.5 bg-[var(--standartColor)] flex self-start justify-center rounded-2xl border-2 cursor-pointer transition-all border-red-600 border-solid hover:bg-transparent hover:text-standartColor">Read more</button></Link>
+        <Link href={`/movies/${movie.id}`}><button className="w-52 p-2.5 bg-[var(--standartColor)] flex self-start justify-center rounded-2xl border-2 cursor-pointer transition-all border-red-600 border-solid hover:bg-transparent hover:text-[var(--standartColor)]">Read more</button></Link>
       </div>
 
       <div className="w-full h-[650px] p-6 backdrop-blur-lg rounded-2xl lg:w-1/2">

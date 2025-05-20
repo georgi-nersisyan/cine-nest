@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from "react";
 import { api_key, genre, main_url, request } from "../lib";
@@ -20,19 +20,25 @@ export default function Movies() {
     moviesFetch();
   }, [genreLink]);
 
-  const choiceGenre = (name:string) => {
+  const choiceGenre = (name: string) => {
     setGenreLink(name);
-  }
+  };
 
   return (
     <div className="flex flex-col gap-10">
       <div className="flex justify-center flex-wrap gap-4 p-2 sm:p-5">
-        {genre.map((gen:IGenre) => {
-          return <GenreButton key={"ganre" + gen.id} genre={gen} onGenre={choiceGenre} />;
+        {genre.map((gen: IGenre) => {
+          return (
+            <GenreButton
+              key={"ganre" + gen.id}
+              genre={gen}
+              onGenre={choiceGenre}
+            />
+          );
         })}
 
         <MovieBlock movies={movies} title="Movies" />
       </div>
     </div>
   );
-} 
+}

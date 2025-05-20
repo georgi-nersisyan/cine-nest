@@ -26,7 +26,7 @@ export default function Home() {
       setPopular(popular.results);
     };
 
-    popularFetch();
+    popularFetch(); 
   }, []);
 
    useEffect(() => {
