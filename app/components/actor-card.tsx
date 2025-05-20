@@ -17,7 +17,7 @@ interface Props {
 
 export default function ActorCard({actor}:Props) {
   return (
-    <div className='w-3xs flex flex-col items-center gap-4'>
+    <div className='w-full flex flex-col items-center gap-4 xl:w-52 lg:w-64'>
         {
            actor.profile_path?
            <Image src={img_url+actor.profile_path} alt={actor.name} width={200} height={300} className='w-full rounded-2xl object-contain' />

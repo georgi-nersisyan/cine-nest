@@ -26,7 +26,7 @@ export default function Movies() {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="flex justify-center flex-wrap gap-4 p-5">
+      <div className="flex justify-center flex-wrap gap-4 p-2 sm:p-5">
         {genre.map((gen:IGenre) => {
           return <GenreButton key={"ganre" + gen.id} genre={gen} onGenre={choiceGenre} />;
         })}

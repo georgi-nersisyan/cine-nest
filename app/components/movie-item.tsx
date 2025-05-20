@@ -4,13 +4,7 @@ import Image from "next/image";
 import { FaImdb } from "react-icons/fa";
 import Link from "next/link";
 import { IGenre } from "./genre-button";
-
-export interface ProductionCompanie {
-  id:number;
-  logo_path:string;
-  name:string;
-  origin_country:string;
-}
+import { ProductionCompanie } from "./componie-card";
 
 export interface IMovie {
   id: number;
@@ -36,15 +30,15 @@ export interface Props {
 export default function MovieItem({ movie }: Props) {
   return (
     <div
-      className="w-full h-full bg-center bg-cover p-14 flex gap-24 items-center"
+      className="w-full h-full bg-center bg-cover p-6 flex flex-col gap-24 items-center lg:flex-row lg:p-14"
       style={{
         backgroundImage: `url(${img_url_original + movie.backdrop_path})`,
       }}
     >
-      <div className="w-1/2 flex flex-col gap-4 justify-start">
+      <div className="w-full flex flex-col gap-4 justify-start lg:w-1/2">
         <h3 className="text-6xl">{movie.title}</h3>
 
-        <div className="flex justify-evenly">
+        <div className="flex flex-col gap-5 justify-evenly sm:flex-row sm:gap-0">
           <span className="flex gap-1 items-center">
             <FaImdb color="yellow" />
             <p
@@ -76,10 +70,10 @@ export default function MovieItem({ movie }: Props) {
 
         <span className="text-gray-500">{movie.overview}</span>
 
-        <Link href={`/movies/${movie.id}`}><button className="w-52 p-2.5 bg-standartColor flex self-start justify-center rounded-2xl border-2 cursor-pointer transition-all border-red-600 border-solid hover:bg-transparent hover:text-standartColor">Read more</button></Link>
+        <Link href={`/movies/${movie.id}`}><button className="w-52 p-2.5 bg-[var(--standartColor)] flex self-start justify-center rounded-2xl border-2 cursor-pointer transition-all border-red-600 border-solid hover:bg-transparent hover:text-standartColor">Read more</button></Link>
       </div>
 
-      <div className="w-1/2 h-[650px] p-6 backdrop-blur-lg rounded-2xl">
+      <div className="w-full h-[650px] p-6 backdrop-blur-lg rounded-2xl lg:w-1/2">
         {
             movie.poster_path ? <Image
             src={img_url + movie.poster_path}

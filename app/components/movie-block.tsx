@@ -22,20 +22,20 @@ export default function MovieBlock({movies, title}:Props) {
         slidesPerView={4}
         spaceBetween={30}
         breakpoints={{
-        //   320: {
-        //   slidesPerView: 1,
-        //  },
-        //   320: {
-        //   slidesPerView: 2,
-        //  },
-        //   320: {
-        //   slidesPerView: 3,
-        //  },
-        //   320: {
-        //   slidesPerView: 4,
-        //  },
-         
+          1280: {            
+            slidesPerView: 4
+          },
+          768: {
+            slidesPerView: 3
+          },
+          420: {
+            slidesPerView: 2
+          }, 
+          320: {
+            slidesPerView: 1
+          }
         }}
+       
         modules={[Pagination]}
         className="mySwiper"
       >
