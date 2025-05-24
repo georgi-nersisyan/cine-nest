@@ -1,6 +1,5 @@
 import React from "react";
 import { img_url, img_url_original } from "../lib";
-import Image from "next/image";
 import { FaImdb } from "react-icons/fa";
 import Link from "next/link";
 import { IGenre } from "./genre-button";
@@ -75,19 +74,15 @@ export default function MovieItem({ movie }: Props) {
 
       <div className="w-full h-[650px] p-6 backdrop-blur-lg rounded-2xl lg:w-1/2">
         {
-            movie.poster_path ? <Image
+            movie.poster_path ? <img
             src={img_url + movie.poster_path}
             alt={movie.title}
-            width={300}
-            height={200}
             className="w-full h-full object-cover rounded-2xl"
           />
           :
-          <Image
+          <img
             src="/not-found-image.jpg"
             alt={movie.title}
-            width={300}
-            height={200}
             className="w-full h-full object-cover rounded-2xl"
           />
         }

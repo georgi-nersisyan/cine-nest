@@ -2,7 +2,6 @@
 
 import { IMovie } from "@/app/components/movie-item";
 import { api_key, img_url, img_url_original } from "@/app/lib";
-import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import React, { useEffect, useState } from "react";
 import { FaImdb } from "react-icons/fa";
@@ -76,12 +75,10 @@ export default function MoviePage() {
       >
         <div className="bg-black opacity-30 w-full h-full absolute top-0 left-0"></div>
         <div className="p-2 backdrop-blur-lg rounded-2xl md:p-5">
-          <Image
+          <img
             src={img_url + movie.poster_path}
             alt={movie.title}
-            width={600}
-            height={400}
-            className="w-full object-contain rounded-2xl lg:w-[600px]"
+            className="w-full h-96 object-contain rounded-2xl lg:w-[600px]"
           />
         </div>
 

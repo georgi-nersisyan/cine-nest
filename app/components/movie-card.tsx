@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 import { Props } from "./movie-item";
 import { img_url } from "../lib";
@@ -15,20 +14,16 @@ export default function MovieCard({ movie }: Props) {
           </Link>
         </div>
         {movie.poster_path ? (
-          <Image
+          <img
             src={img_url + movie.poster_path}
             alt=""
-            width={100}
-            height={200}
-            className="w-full rounded-2xl object-contain"
+            className="w-full h-[400px] rounded-2xl object-cover"
           />
         ) : (
-          <Image
+          <img
             src="/images/not-found-image.jpg"
             alt={movie.title}
-            width={200}
-            height={300}
-            className="w-full h-full rounded-2xl object-contain"
+            className="w-full h-[400px] rounded-2xl object-cover"
           />
         )}
       </div>

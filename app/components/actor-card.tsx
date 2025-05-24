@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react'
 import { img_url } from '../lib';
 
@@ -20,9 +19,9 @@ export default function ActorCard({actor}:Props) {
     <div className='w-full flex flex-col items-center gap-4 xl:w-52 lg:w-64'>
         {
            actor.profile_path?
-           <Image src={img_url+actor.profile_path} alt={actor.name} width={200} height={300} className='w-full rounded-2xl object-contain' />
+           <img src={img_url+actor.profile_path} alt={actor.name} className='w-full h-80 rounded-2xl object-contain' />
             :
-           <Image src='/images/not-found-image.jpg' alt={actor.name} width={200} height={300} className='w-full h-full rounded-2xl object-contain' />
+           <img src='/images/not-found-image.jpg' alt={actor.name} className='w-full h-80 rounded-2xl object-contain' />
         }
 
         <h4>{actor.name}</h4>
