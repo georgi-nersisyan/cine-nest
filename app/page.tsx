@@ -1,134 +1,73 @@
-"use client";
+// "use client";
 
-import { useEffect, useState } from "react";
-import { api_key, api_url, main_url, request, searchUrl } from "./lib";
-import MovieItem, { IMovie } from "./components/movie-item";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import "swiper/css";
-import "swiper/css/navigation";
-
-import { Navigation } from "swiper/modules";
-import SearchForm from "./components/search-form";
-import MovieCard from "./components/movie-card";
+// import { useEffect, useState } from "react";
+import { api_key, api_url, main_url } from "./lib";
+import { IMovie } from "./components/movie-item";
 import MovieBlock from "./components/movie-block";
+import SearchBlock from "./components/search-block";
+import PopularBlock from "./components/popular-block";
 
-export default function Home() {
-  // const popularRes = await fetch(
-  //   `${api_url}?api_key=${process.env.TMDB_API_KEY}`,
-  //   {
-  //     cache: "no-store",
-  //   }
-  // );
-  // const historyRes = await fetch(
-  //   `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=36&api_key=${process.env.TMDB_API_KEY}`
-  // );
-  // const comedyRes = await fetch(
-  //   `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=35&api_key=${process.env.TMDB_API_KEY}`
-  // );
+export default async function Home() {
+  const [popularRes, historyRes, comedyRes] = await Promise.all([
+  fetch(api_url).then(res => res.json()),
+  fetch(`${main_url}/discover/movie?sort_by=popularity.desc&with_genres=36&api_key=${api_key}`).then(res => res.json()),
+  fetch(`${main_url}/discover/movie?sort_by=popularity.desc&with_genres=35&api_key=${api_key}`).then(res => res.json()),
+]);
 
-  // const popular: IMovie[] = await popularRes.json();
-  // const history: IMovie[] = await historyRes.json();
-  // const comedy: IMovie[] = await comedyRes.json();
-  // const movies: IMovie[] = [];
 
-  const [movies, setMovies] = useState([]);
-  const [popular, setPopular] = useState([]);
+  const popular: IMovie[] = popularRes.results;
+  const history: IMovie[] = historyRes.results;
+  const comedy: IMovie[] = comedyRes.results;
+  const movies: IMovie[] = popularRes.results;
 
-  const [history, setHistory] = useState([]);
-  const [comedy, setComedy] = useState([]);
+  // const [movies, setMovies] = useState([]);
+  // const [popular, setPopular] = useState([]);
 
-  useEffect(() => {
-    const popularFetch = async () => {
-      const popular = await request(api_url);
-      setPopular(popular.results);
-    };
+  // const [history, setHistory] = useState([]);
+  // const [comedy, setComedy] = useState([]);
 
-    popularFetch();
-  }, []);
+  // useEffect(() => {
+  //   const popularFetch = async () => {
+  //     const popular = await request(api_url);
+  //     setPopular(popular.results);
+  //   };
 
-  useEffect(() => {
-    const genreFetch = async () => {
-      const historyUrl = `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=36&${api_key}`;
-      const history = await request(historyUrl);
-      setHistory(history.results);
+  //   popularFetch();
+  // }, []);
 
-      const comedyUrl = `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=35&${api_key}`;
-      const comedy = await request(comedyUrl);
-      setComedy(comedy.results);
-    };
+  // useEffect(() => {
+  //   const genreFetch = async () => {
+  //     const historyUrl = `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=36&${api_key}`;
+  //     const history = await request(historyUrl);
+  //     setHistory(history.results);
 
-    genreFetch();
-  }, []);
+  //     const comedyUrl = `${main_url}/discover/movie?sort_by=popularity.desc&with_genres=35&${api_key}`;
+  //     const comedy = await request(comedyUrl);
+  //     setComedy(comedy.results);
+  //   };
 
-  const onFind = (title: string) => {
-    const searchFetch = async () => {
-      const movies = await request(searchUrl + "&query=" + title);
-      setMovies(movies.results);
-    };
+  //   genreFetch();
+  // }, []);
 
-    searchFetch();
-  };
+  // const onFind = (title: string) => {
+  //   const searchFetch = async () => {
+  //     const movies = await request(searchUrl + "&query=" + title);
+  //     setMovies(movies.results);
+  //   };
+
+  //   searchFetch();
+  // };
 
   return (
     <div className="flex flex-col gap-10">
-      <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-        {popular.map((movie: IMovie) => {
-          return (
-            <SwiperSlide key={"movie" + movie.id}>
-              <MovieItem movie={movie} />
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-
       <div className="flex flex-col gap-10 p-3 sm:p-10">
-        <SearchForm movies={popular} onSearch={onFind} />
+        {/* <SearchForm movies={popular} onSearch={onFind} /> */}
       </div>
 
-      <div className="flex flex-col gap-10 p-5">
-        <div className="w-full flex flex-col gap-5 p-5">
-          <h3 className="text-4xl">Search</h3>
+      <PopularBlock popular={popular} />
 
-          <Swiper
-            slidesPerView={4}
-            breakpoints={{
-              1280: {
-                slidesPerView: 4,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              560: {
-                slidesPerView: 2,
-              },
-              320: {
-                slidesPerView: 1,
-              },
-            }}
-            spaceBetween={30}
-            pagination={{
-              clickable: true,
-            }}
-            className="mySwiper"
-          >
-            {movies.length >= 1
-              ? movies.map((movie: IMovie) => {
-                  return (
-                    <SwiperSlide key={movie.id}>
-                      <MovieCard movie={movie} />
-                    </SwiperSlide>
-                  );
-                })
-              : popular.map((movie: IMovie) => {
-                  return (
-                    <SwiperSlide key={movie.id}>
-                      <MovieCard movie={movie} />
-                    </SwiperSlide>
-                  );
-                })}
-          </Swiper>
-        </div>
+      <div className="flex flex-col gap-10 p-5">
+        <SearchBlock popular={popular} movies={movies} />
 
         <MovieBlock movies={history} title="History" />
 
