@@ -18,7 +18,7 @@ interface Props {
 export default function MovieBlock({movies, title}:Props) {
   return (
     <div className='w-full flex flex-col gap-5 p-5'>
-        <h3 className='text-4xl'>{title}</h3>
+      <h3 className='text-4xl'>{title}</h3>
 
       <Swiper
         slidesPerView={4}
@@ -42,7 +42,7 @@ export default function MovieBlock({movies, title}:Props) {
         className="mySwiper"
       >
         {
-          movies.map((movie:IMovie) => {            
+          movies?.map((movie:IMovie) => {            
            return <SwiperSlide key={movie.id}><MovieCard movie={movie} /></SwiperSlide>
           })
         }

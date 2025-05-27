@@ -1,24 +1,25 @@
 // "use client";
 
 // import { useEffect, useState } from "react";
-import { api_key, api_url, main_url } from "./lib";
-import { IMovie } from "./components/movie-item";
+import { api_key, api_url, main_url, searchUrl } from "./lib";
 import MovieBlock from "./components/movie-block";
 import SearchBlock from "./components/search-block";
 import PopularBlock from "./components/popular-block";
+import { IMovie } from "./components/movie-item";
+import { request } from "http";
 
 export default async function Home() {
   const [popularRes, historyRes, comedyRes] = await Promise.all([
   fetch(api_url).then(res => res.json()),
-  fetch(`${main_url}/discover/movie?sort_by=popularity.desc&with_genres=36&api_key=${api_key}`).then(res => res.json()),
-  fetch(`${main_url}/discover/movie?sort_by=popularity.desc&with_genres=35&api_key=${api_key}`).then(res => res.json()),
+  fetch(`${main_url}/discover/movie?sort_by=popularity.desc&with_genres=36&${api_key}`).then(res => res.json()),
+  fetch(`${main_url}/discover/movie?sort_by=popularity.desc&with_genres=35&${api_key}`).then(res => res.json()),
 ]);
 
 
   const popular: IMovie[] = popularRes.results;
   const history: IMovie[] = historyRes.results;
   const comedy: IMovie[] = comedyRes.results;
-  const movies: IMovie[] = popularRes.results;
+  const movies: IMovie[] = [];
 
   // const [movies, setMovies] = useState([]);
   // const [popular, setPopular] = useState([]);
@@ -49,25 +50,12 @@ export default async function Home() {
   //   genreFetch();
   // }, []);
 
-  // const onFind = (title: string) => {
-  //   const searchFetch = async () => {
-  //     const movies = await request(searchUrl + "&query=" + title);
-  //     setMovies(movies.results);
-  //   };
-
-  //   searchFetch();
-  // };
-
   return (
     <div className="flex flex-col gap-10">
-      <div className="flex flex-col gap-10 p-3 sm:p-10">
-        {/* <SearchForm movies={popular} onSearch={onFind} /> */}
-      </div>
-
       <PopularBlock popular={popular} />
 
       <div className="flex flex-col gap-10 p-5">
-        <SearchBlock popular={popular} movies={movies} />
+        <SearchBlock popular={popular} />
 
         <MovieBlock movies={history} title="History" />
 

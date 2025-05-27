@@ -17,14 +17,14 @@ export default function PopularBlock({popular}:Props) {
   return (
     <div>
       <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-              {popular.map((movie: IMovie) => {
+              {popular?.map((movie:IMovie) => {
                 return (
                   <SwiperSlide key={"movie" + movie.id}>
                     <MovieItem movie={movie} />
                   </SwiperSlide>
                 );
               })}
-            </Swiper> 
+      </Swiper> 
     </div>
   )
 }

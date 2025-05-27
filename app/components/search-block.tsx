@@ -1,21 +1,36 @@
 'use client'
 
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import { IMovie } from "./movie-item";
 import MovieCard from "./movie-card";
+import { request, searchUrl } from "../lib";
+import SearchForm from "./search-form";
 
 interface Props {
   popular: IMovie[];
-  movies: IMovie[];
 }
 
-export default function SearchBlock({ popular, movies }: Props) {
-  return (
-      <div className="w-full flex flex-col gap-5 p-5">
+export default function SearchBlock({ popular }: Props) { 
+  const [movies, setMovies] = useState<IMovie[]>(popular);
+
+  const onFind = (title: string) => {
+     const searchFetch = async () => {
+       const data = await request(searchUrl + "&query=" + title);
+       setMovies(data.results);
+     };
+ 
+     searchFetch();
+   };
+
+    return (
+     <div className="flex flex-col gap-16">
+         <SearchForm movies={popular} onSearch={onFind} />
+
+         <div className="w-full flex flex-col gap-5 p-5">
         <h3 className="text-4xl">Search</h3>
 
         <Swiper
@@ -40,22 +55,17 @@ export default function SearchBlock({ popular, movies }: Props) {
           }}
           className="mySwiper"
         >
-          {movies.length >= 1
-            ? movies.map((movie: IMovie) => {
+          {
+            movies?.map((movie: IMovie) => {
                 return (
                   <SwiperSlide key={movie.id}>
                     <MovieCard movie={movie} />
                   </SwiperSlide>
                 );
               })
-            : popular.map((movie: IMovie) => {
-                return (
-                  <SwiperSlide key={movie.id}>
-                    <MovieCard movie={movie} />
-                  </SwiperSlide>
-                );
-              })}
+            }
         </Swiper>
       </div>
+     </div>
   );
 }

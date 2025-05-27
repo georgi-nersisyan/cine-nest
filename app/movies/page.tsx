@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import React, { useEffect, useState } from "react";
 import { api_key, genre, main_url, request } from "../lib";
