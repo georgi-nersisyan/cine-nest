@@ -1,4 +1,5 @@
-import React from 'react'
+'use client';
+
 import ActorCard, { IActor } from './actor-card';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -7,10 +8,10 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 
 interface Props {
-    movieId:number;
+    actors:IActor[];
 }
 
-export default function CastBlock({movieId}:Props) {
+export default function CastBlock({actors}:Props) {
   return (
     <div className="flex flex-col gap-8 p-10">
         <h3 className="text-5xl">Cast</h3>

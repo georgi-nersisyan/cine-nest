@@ -1,43 +1,65 @@
-"use client";
+// 'use client';
 
-import { IMovie } from "@/app/components/movie-item";
 import { api_key, img_url, img_url_original } from "@/app/lib";
-import React, { useEffect, useState } from "react";
 import { FaImdb } from "react-icons/fa";
 
-import { useParams } from "next/navigation";
 import NotFound from "@/app/components/not-found";
 import { IGenre } from "@/app/components/genre-button";
-import { IActor } from "@/app/components/actor-card";
-import { IVideo } from "@/app/components/video-card";
+
 import CompaniesBlock from "@/app/components/companies-block";
 import CastBlock from "@/app/components/cast-block";
+import { IMovie } from "@/app/components/movie-item";
+import { IActor } from "@/app/components/actor-card";
+import { IVideo } from "@/app/components/video-card";
+import VideosBlock from "@/app/components/videos-block";
 
-export default function MoviePage() {
-  const { movieId } = useParams();
-  const [movie, setMovie] = useState<IMovie | null>(null);
+interface Props {
+  params: { movieId: string };
+}
 
-  const [actors, setActors] = useState<IActor[] | null>(null);
+export default async function MoviePage({ params }: Props) {
+  // const [movie, setMovie] = useState<IMovie | null>(null);
+  // const [actors, setActors] = useState<IActor[] | null>(null);
 
-  useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}?${api_key}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Movie not found");
-        return res.json();
-      })
-      .then((res) => setMovie(res))
-      .catch((err) => {
-        console.log(err);
-        setMovie(null);
-      });
-  }, [movieId]);
+  // useEffect(() => {
+  //   fetch(`https://api.themoviedb.org/3/movie/${movieId}?${api_key}`)
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Movie not found");
+  //       return res.json();
+  //     })
+  //     .then((res) => setMovie(res))
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setMovie(null);
+  //     });
+  // }, [movieId]);
 
-  useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?${api_key}`)
-      .then((res) => res.json())
-      .then((res) => setActors(res.cast));
+  const [movieRes, actorsRes, videosRes] = await Promise.all([
+    fetch(
+      `https://api.themoviedb.org/3/movie/${params.movieId}?${api_key}`,
+      {
+        cache: "no-store",
+      }
+    ),
+    fetch(
+      `https://api.themoviedb.org/3/movie/${params.movieId}/credits?${api_key}`,
+      {
+        cache: "no-store",
+      }
+    ),
+    fetch(
+      `https://api.themoviedb.org/3/movie/${params.movieId}/videos?${api_key}`,
+      {
+        cache: "no-store",
+      }
+    ),
+  ]);
 
-  }, [movieId]);
+  const movie: IMovie = await movieRes.json();
+  const actorsData = await actorsRes.json();
+  const videosData = await videosRes.json();
+  const actors:IActor[] = actorsData.cast;
+  const videos:IVideo[] = videosData.results;
 
   if (movie === null) {
     return <NotFound />;
@@ -46,7 +68,7 @@ export default function MoviePage() {
   return (
     <div className="w-full flex flex-col gap-10">
       <div
-        className="w-full flex flex-col gap-3 p-3 relative bg-cover xl:p-10 xl:gap-10 lg:flex-row"
+        className="w-full flex flex-col justify-center gap-3 p-3 relative bg-cover xl:p-10 xl:gap-10 lg:flex-row"
         style={{
           backgroundImage: `url(${img_url_original + movie.backdrop_path})`,
         }}
@@ -56,7 +78,7 @@ export default function MoviePage() {
           <img
             src={img_url + movie.poster_path}
             alt={movie.title}
-            className="w-full h-96 object-contain rounded-2xl lg:w-[600px]"
+            className="w-full object-contain rounded-2xl lg:w-[400px]"
           />
         </div>
 
@@ -79,7 +101,7 @@ export default function MoviePage() {
 
             <span className="flex items-center">
               <p className="flex gap-1 items-center text-gray-300">
-                Runtime -{" "}
+                Runtime - 
                 {movie.runtime ? Number(movie.runtime / 60).toFixed(1) : "N/A"}{" "}
                 hours.
               </p>
@@ -115,10 +137,10 @@ export default function MoviePage() {
       </div>
 
       <CompaniesBlock companies={movie.production_companies} />
-      
+
       <CastBlock actors={actors} />
 
-      
+      <VideosBlock videos={videos} />
     </div>
   );
 }

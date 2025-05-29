@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import VideoCard, { IVideo } from "./video-card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -8,22 +8,14 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import { EffectCoverflow, Pagination } from "swiper/modules";
-import { api_key } from "../lib";
 
 interface Props {
-    movieId:number;
+    videos:IVideo[];
 }
 
-export default function VideosBlock({movieId}:Props) {
-  const [videos, setVideos] = useState<IVideo[] | null>(null);
+export default function VideosBlock({videos}:Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
-
-  useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?${api_key}`)
-      .then((res) => res.json())
-      .then((res) => setVideos(res.results));
-  }, [movieId]);
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -33,7 +25,7 @@ export default function VideosBlock({movieId}:Props) {
     setSelectedVideo(video);
   };
   return (
-    <div className="flex flex-col gap-8 p-10">
+    <div className="flex flex-col gap-8 p-2 sm:p-10">
       <h3 className="text-5xl">Videos</h3>
 
       <Swiper
@@ -47,7 +39,17 @@ export default function VideosBlock({movieId}:Props) {
           modifier: 1,
           slideShadows: true,
         }}
-        breakpoints={{}}
+        breakpoints={{
+          1200:{
+            slidesPerView:3
+          },
+          900:{
+            slidesPerView:2
+          },
+          0: {
+            slidesPerView:1
+          }
+        }}
         modules={[EffectCoverflow, Pagination]}
         className="mySwiper"
       >
@@ -67,16 +69,14 @@ export default function VideosBlock({movieId}:Props) {
       </Swiper>
 
       <div
-        className={`w-full p-10 fixed top-1/2 left-1/2 backdrop-blur-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl z-50 ${
+        className={`w-full h-full p-8 fixed top-1/2 left-1/2 backdrop-blur-lg -translate-x-1/2 -translate-y-1/2 z-50 flex justify-center items-center ${
           isOpen ? "block" : "hidden"
-        }`}
+        } lg:p-24`}
         onClick={handleOpen}
       >
         <iframe
-          width="750px"
-          height="700px"
           src={`https://www.youtube.com/embed/${selectedVideo?.key}`}
-          className="w-full rounded-2xl"
+          className="w-full h-72 rounded-2xl sm:h-[400px] lg:h-[550px]"
           title="YouTube video player"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; frameborder; allowfullscreen"
         ></iframe>
