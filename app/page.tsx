@@ -1,12 +1,11 @@
 // "use client";
 
 // import { useEffect, useState } from "react";
-import { api_key, api_url, main_url, searchUrl } from "./lib";
+import { api_key, api_url, main_url } from "./lib";
 import MovieBlock from "./components/movie-block";
 import SearchBlock from "./components/search-block";
 import PopularBlock from "./components/popular-block";
 import { IMovie } from "./components/movie-item";
-import { request } from "http";
 
 export default async function Home() {
   const [popularRes, historyRes, comedyRes] = await Promise.all([
